@@ -1,12 +1,12 @@
 #include <iostream>
+#include <filesystem>
 #include "loader.h"
 #include "tokenizer.h"
-#include <filesystem>
+#include "indexer.h"
 
 int main()
 {
     std::vector<Document> documents;
-
     try
     {
         documents = load_documents("../corpus");
@@ -17,23 +17,16 @@ int main()
         return 1;
     }
 
-    // --- Summary check (mandatory per protocol) ---
-    std::cout << "\nDocuments loaded: " << documents.size() << "\n";
+    std::cout << "Documents loaded: " << documents.size() << "\n";
 
-    if (!documents.empty())
-    {
-        size_t minLen = documents[0].content.size();
-        size_t maxLen = documents[0].content.size();
+    Index index = build_index(documents);
 
-        for (const auto &doc : documents)
-        {
-            minLen = std::min(minLen, doc.content.size());
-            maxLen = std::max(maxLen, doc.content.size());
-        }
+    std::cout << "Unique terms in index: " << index.size() << "\n";
 
-        std::cout << "Min content length: " << minLen << "\n";
-        std::cout << "Max content length: " << maxLen << "\n";
-    }
+    // Sanity check: look up a common word
+    std::string probe = "the";
+    if (index.count(probe))
+        std::cout << "Postings for \"" << probe << "\": " << index[probe].size() << "\n";
 
     return 0;
 }
