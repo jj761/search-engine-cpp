@@ -67,23 +67,44 @@ Documents loaded: 50
 Unique terms in index: 148263
 
 Enter a query (or 'quit' to exit):
-> captain ahab
+
+> madness
 Top 10 results:
-  doc 30 (25833.txt)  score 6.23276
-  doc 18 (22793.txt)  score 5.09202
+  doc 29 (3567.txt)  score 2.41555
+  doc 33 (18857.txt)  score 2.28918
+  doc 5  (345.txt)   score 2.21615
   ...
 
-> "it was"
-Phrase matches (49 docs):
-  doc 0 (16266.txt)
-  doc 1 (3891.txt)
+> redemption
+Top 8 results:
+  doc 30 (25833.txt)  score 8.84888
+  doc 25 (28117.txt)  score 7.12942
+  doc 18 (22793.txt)  score 7.02468
+  ...
+
+> betrayal
+Top 10 results:
+  doc 42 (25701.txt)  score 3.21451
+  doc 18 (22793.txt)  score 2.28079
+  doc 21 (7142.txt)   score 2.28079
+  ...
+
+> "the captain"
+Phrase matches (25 docs):
+  doc 1  (3891.txt)
+  doc 3  (245.txt)
+  doc 5  (345.txt)
+  ...
+
+> "dark night"
+Phrase matches (7 docs):
+  doc 3  (245.txt)
+  doc 11 (202.txt)
+  doc 21 (7142.txt)
   ...
 
 > quit
 ```
-
----
-
 ## Run Tests
 
 Each component has an isolated test binary:
@@ -136,4 +157,3 @@ tests/
 
 ---
 
-## Built in ~12 hours across 6 days.
