@@ -5,6 +5,7 @@
 #include "indexer.h"
 #include "scorer.h"
 #include "topk.h"
+#include "parser.h"
 
 int main()
 {
@@ -24,18 +25,46 @@ int main()
     Index index = build_index(documents);
 
     std::cout << "Unique terms in index: " << index.size() << "\n";
+    std::cout << "\nEnter a query (or 'quit' to exit):\n";
 
-    std::string query = "white whale";
-    std::cout << "\nQuery: \"" << query << "\"\n";
+    std::string input;
+    while (true)
+    {
+        std::cout << "> ";
+        std::getline(std::cin, input);
 
-    auto scores = score_documents(query, index, documents);
-    auto results = top_k_results(scores, 5);
+        if (input == "quit")
+            break;
 
-    std::cout << "Top " << results.size() << " results:\n";
-    for (const auto &p : results)
-        std::cout << "  doc " << p.first
-                  << " (" << documents[p.first].filename << ")"
-                  << "  score " << p.second << "\n";
+        ParsedQuery pq = parse_query(input);
+
+        if (pq.term.empty())
+        {
+            std::cout << "Empty query, try again.\n";
+            continue;
+        }
+
+        if (pq.type == QueryType::PHRASE)
+        {
+            std::cout << "[phrase search not yet implemented]\n";
+            continue;
+        }
+
+        auto scores = score_documents(pq.term, index, documents);
+        auto results = top_k_results(scores, 10);
+
+        if (results.empty())
+        {
+            std::cout << "No results found.\n";
+            continue;
+        }
+
+        std::cout << "Top " << results.size() << " results:\n";
+        for (const auto &p : results)
+            std::cout << "  doc " << p.first
+                      << " (" << documents[p.first].filename << ")"
+                      << "  score " << p.second << "\n";
+    }
 
     return 0;
 }
