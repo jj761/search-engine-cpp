@@ -6,6 +6,7 @@
 #include "scorer.h"
 #include "topk.h"
 #include "parser.h"
+#include "phrase.h"
 
 int main()
 {
@@ -46,7 +47,16 @@ int main()
 
         if (pq.type == QueryType::PHRASE)
         {
-            std::cout << "[phrase search not yet implemented]\n";
+            std::vector<int> matches = phrase_search(pq.term, index);
+            if (matches.empty())
+            {
+                std::cout << "No results found.\n";
+                continue;
+            }
+            std::cout << "Phrase matches (" << matches.size() << " docs):\n";
+            for (int id : matches)
+                std::cout << "  doc " << id
+                          << " (" << documents[id].filename << ")\n";
             continue;
         }
 
